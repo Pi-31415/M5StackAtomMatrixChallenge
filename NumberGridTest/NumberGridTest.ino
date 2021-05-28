@@ -117,4 +117,12 @@ void randomPixelAnimation(int pixelColor)
     M5.dis.drawpix(currentPixel, GRB_COLOR_BLACK);
     delay(1);
   }
+}void setup() {
+  // put your setup code here, to run once:
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
 }

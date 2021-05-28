@@ -26,8 +26,17 @@ int full_screen[25] =
   1, 1, 1, 1, 1
 };
 
+int char_A[25] =
+{
+  0, 0, 1, 0, 0,
+  0, 1, 0, 1, 0,
+  1, 0, 0, 0, 1,
+  1, 1, 1, 1, 1,
+  1, 0, 0, 0, 1
+};
+
 //Array of patterns for display
-int *display[6] = { full_screen };
+int *display[6] = { full_screen, char_A };
 
 
 void setup()
@@ -61,14 +70,18 @@ void loop()
     //Flash Red (Step 2)
     BLINK_MODE_ON = true;
     M5.dis.clear();
+<<<<<<< Updated upstream
     drawArray2(display[0], GRB_COLOR_PURPLE);
+=======
+    drawArray2(display[1], GRB_COLOR_RED);
+>>>>>>> Stashed changes
   }
   else if (STEP == 2)
   {
     //Flash Red (Step 2)
     BLINK_MODE_ON = true;
     M5.dis.clear();
-    drawArray2(display[0], GRB_COLOR_WHITE);
+    drawArray2(display[1], GRB_COLOR_WHITE);
   }
 
   //This is for debugging purpose

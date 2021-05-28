@@ -1,4 +1,4 @@
-/**
+/*
    M5StackAtomMatrixChallenge.ino
 
    By: Umer Bin Liaqat, Omar Elkammah, Sherifa Yakubu, Pi Ko
@@ -10,6 +10,7 @@
 #include "M5Atom.h"
 
 //Define Colors
+//GRB not RGB
 int GRB_COLOR_WHITE = 0xffffff;
 int GRB_COLOR_BLACK = 0x000000;
 int GRB_COLOR_RED = 0x00ff00;

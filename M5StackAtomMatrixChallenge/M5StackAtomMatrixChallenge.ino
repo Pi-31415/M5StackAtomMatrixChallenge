@@ -14,7 +14,6 @@
 int GRB_COLOR_WHITE = 0xffffff;
 int GRB_COLOR_BLACK = 0x000000;
 int GRB_COLOR_RED = 0x00ff00;
-int GRB_COLOR_PURPLE = 0x0095B3;
 
 //Define Patterns
 int full_screen[25] =
@@ -26,17 +25,9 @@ int full_screen[25] =
   1, 1, 1, 1, 1
 };
 
-int char_A[25] =
-{
-  0, 0, 1, 0, 0,
-  0, 1, 0, 1, 0,
-  1, 0, 0, 0, 1,
-  1, 1, 1, 1, 1,
-  1, 0, 0, 0, 1
-};
 
 //Array of patterns for display
-int *display[6] = { full_screen, char_A };
+int *display[6] = { full_screen };
 
 
 void setup()
@@ -70,30 +61,26 @@ void loop()
     //Flash Red (Step 2)
     BLINK_MODE_ON = true;
     M5.dis.clear();
-<<<<<<< Updated upstream
-    drawArray2(display[0], GRB_COLOR_PURPLE);
-=======
-    drawArray2(display[1], GRB_COLOR_RED);
->>>>>>> Stashed changes
+    drawArray2(display[0], GRB_COLOR_RED);
   }
   else if (STEP == 2)
   {
     //Flash Red (Step 2)
     BLINK_MODE_ON = true;
     M5.dis.clear();
-    drawArray2(display[1], GRB_COLOR_WHITE);
+    drawArray2(display[0], GRB_COLOR_WHITE);
   }
 
-  //This is for debugging purpose
+  //This is for debugging purpose, listens to serial at 115200 baud
   Serial.println(STEP);
-
+  
   if (BLINK_MODE_ON)
   {
     delay(100);
     M5.dis.clear();
     delay(100);
   }
-
+  
   delay(50);
   M5.update();
 }

@@ -13,6 +13,7 @@
 int GRB_COLOR_WHITE = 0xffffff;
 int GRB_COLOR_BLACK = 0x000000;
 int GRB_COLOR_RED = 0x00ff00;
+int GRB_COLOR_PURPLE = 0x0095B3;
 
 //Define Patterns
 int full_screen[25] =
@@ -59,7 +60,7 @@ void loop()
     //Flash Red (Step 2)
     BLINK_MODE_ON = true;
     M5.dis.clear();
-    drawArray2(display[0], GRB_COLOR_RED);
+    drawArray2(display[0], GRB_COLOR_PURPLE);
   }
   else if (STEP == 2)
   {

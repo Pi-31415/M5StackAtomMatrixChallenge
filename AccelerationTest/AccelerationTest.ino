@@ -241,9 +241,9 @@ void loop()
     M5.IMU.getAccelData(&accX, &accY, &accZ);
     // Average the acceleration data
     // simple "running average" method without storing the data in an array
-    accX_avg = ((accX_avg * (n_average - 1)) + accX) / n_average;
-    accY_avg = ((accY_avg * (n_average - 1)) + accY) / n_average;
-    accZ_avg = ((accZ_avg * (n_average - 1)) + accZ) / n_average;
+    accX_avg = (((accX_avg * (n_average - 1)) + accX) / n_average)*10;
+    accY_avg = (((accY_avg * (n_average - 1)) + accY) / n_average)*10;
+    accZ_avg = (((accZ_avg * (n_average - 1)) + accZ) / n_average)*10;
 
    // Serial.println("X: ");
     //Serial.println(accX_avg);

@@ -22,6 +22,7 @@ int GRB_COLOR_RED = 0x00ff00;
 // Define variables for instantaneous acceleration
 // and sample size for calculating average
 float accX_avg = 0, accY_avg = 0, accZ_avg = 0;
+float accX_avg_old = 0, accY_avg_old = 0, accZ_avg_old = 0;
 int n_average = 15;
 bool IMU_ready = false;
 
@@ -40,7 +41,7 @@ int *display[1] = {full_screen};
 // STEP is for keeping track of the stages
 int STEP = 0;
 bool BLINK_MODE_ON = false;
-float BRAKE_ACCELERATION_THRESHOLD = 3.0;
+float BRAKE_ACCELERATION_THRESHOLD = 0.5;
 
 
 void setup()
@@ -106,7 +107,7 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(fabs(accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
+        if(fabs((accZ_avg-accZ_avg_old) * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
             BLINK_MODE_ON = false;
         }else{
             BLINK_MODE_ON = true;
@@ -128,7 +129,7 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(fabs(accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
+        if(fabs((accZ_avg-accZ_avg_old) * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
             BLINK_MODE_ON = false;
         }else{
             BLINK_MODE_ON = true;
@@ -152,6 +153,11 @@ void loop()
         M5.dis.clear();
          delay(50);
     }
+
+    //Check the change in acceleration
+    accX_avg_old = accX_avg;
+    accY_avg_old = accY_avg; 
+    accZ_avg_old = accZ_avg;
 
     M5.update();
 }

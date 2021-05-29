@@ -11,12 +11,12 @@ void setup()
     serial.begin(9600);
     M5.begin();
     M5.Power.begin();
-    M5.Lad.fillScreen(WHITE);
-    M5.Lad.setTextColor(BLACK);
-    M5.Lad.setTextSize(2);
-    M5.Lad.setCursor(40, 10);
-    M5.Lad.printf("M5stack Thermometer");
-    M5.Lad.fillCircle(65, 180, 30, RED);
-    M5.Lad.fillRect(55, 60, 20, 150, RED);
-    M5.Lad.fillCircle(65, 60, 10, RED);
+    M5.Lcd.fillScreen(WHITE);
+    M5.Lcd.setTextColor(BLACK);
+    M5.Lcd.setTextSize(2);
+    M5.Lcd.setCursor(40, 10);
+    M5.Lcd.printf("M5stack Thermometer");
+    M5.Lcd.fillCircle(65, 180, 30, RED);
+    M5.Lcd.fillRect(55, 60, 20, 150, RED);
+    M5.Lcd.fillCircle(65, 60, 10, RED);
 }

@@ -40,7 +40,7 @@ int *display[1] = {full_screen};
 // STEP is for keeping track of the stages
 int STEP = 0;
 bool BLINK_MODE_ON = false;
-float BRAKE_ACCELERATION_THRESHOLD = 0.5;
+float BRAKE_ACCELERATION_THRESHOLD = 2;
 
 
 void setup()
@@ -99,14 +99,14 @@ void loop()
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Average the acceleration data
         // find the "running average"
-        accX_avg = ((accX_avg * (n_average - 1)) + accX) / n_average;
-        accY_avg = ((accY_avg * (n_average - 1)) + accY) / n_average;
-        accZ_avg = ((accZ_avg * (n_average - 1)) + accZ) / n_average;
+        accX_avg = ((accX_avg * (n_average - 1)) + fabs(accX)) / n_average;
+        accY_avg = ((accY_avg * (n_average - 1)) + fabs(accY)) / n_average;
+        accZ_avg = ((accZ_avg * (n_average - 1)) + fabs(accZ)) / n_average;
 
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(fabs((accZ_avg) * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
+        if((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
             BLINK_MODE_ON = false;
         }else{
             BLINK_MODE_ON = true;
@@ -121,14 +121,14 @@ void loop()
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Average the acceleration data
         // find the "running average"
-        accX_avg = ((accX_avg * (n_average - 1)) + accX) / n_average;
-        accY_avg = ((accY_avg * (n_average - 1)) + accY) / n_average;
-        accZ_avg = ((accZ_avg * (n_average - 1)) + accZ) / n_average;
+        accX_avg = ((accX_avg * (n_average - 1)) + fabs(accX)) / n_average;
+        accY_avg = ((accY_avg * (n_average - 1)) + fabs(accY)) / n_average;
+        accZ_avg = ((accZ_avg * (n_average - 1)) + fabs(accZ)) / n_average;
 
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(fabs((accZ_avg) * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
+        if((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
             BLINK_MODE_ON = false;
         }else{
             BLINK_MODE_ON = true;

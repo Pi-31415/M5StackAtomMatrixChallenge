@@ -22,7 +22,7 @@ int GRB_COLOR_RED = 0x00ff00;
 // Define variables for instantaneous acceleration
 // and sample size for calculating average
 float accX_avg = 0, accY_avg = 0, accZ_avg = 0;
-int n_average = 15;
+int n_average = 5;
 bool IMU_ready = false;
 
 //Define Patterns
@@ -40,7 +40,7 @@ int *display[1] = {full_screen};
 // STEP is for keeping track of the stages
 int STEP = 0;
 bool BLINK_MODE_ON = false;
-float BRAKE_ACCELERATION_THRESHOLD = 2;
+float BRAKE_ACCELERATION_THRESHOLD = 10;
 
 
 void setup()

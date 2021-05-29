@@ -103,7 +103,7 @@ void loop()
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("Manual Rear strobe (RED) "));
+        matrix.print(F("MANUAL REAR STROBE RED "));
         if (--x < -96)
         {
             x = matrix.width();
@@ -126,7 +126,7 @@ void loop()
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("Manual Front strobe (WHITE) "));
+        matrix.print(F("MANUAL FRONT STROBE WHITE "));
         if (--x < -96)
         {
             x = matrix.width();
@@ -149,7 +149,7 @@ void loop()
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("Automatic Rear Mode Rear (RED) "));
+        matrix.print(F("AUTOMATIC REAR MODE RED "));
         if (--x < -96)
         {
             x = matrix.width();
@@ -190,7 +190,7 @@ void loop()
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("Automatic Rear Mode Rear (WHITE) "));
+        matrix.print(F("AUTOMATIC REAR MODE WHITE "));
         if (--x < -96)
         {
             x = matrix.width();

@@ -106,10 +106,10 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(fabs(accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
+        if(fabs((accZ_avg) * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
             BLINK_MODE_ON = false;
         }else{
-            //BLINK_MODE_ON = true;
+            BLINK_MODE_ON = true;
         }
         M5.dis.clear();
         turn_on_lights(display[0], GRB_COLOR_RED);
@@ -128,10 +128,10 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(fabs(accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD){
+        if(fabs((accZ_avg) * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
             BLINK_MODE_ON = false;
         }else{
-            //BLINK_MODE_ON = true;
+            BLINK_MODE_ON = true;
         }
 
         M5.dis.clear();
@@ -148,9 +148,10 @@ void loop()
 
     if (BLINK_MODE_ON)
     {
-        delay(100);
+        delay(50);
         M5.dis.clear();
-         delay(50);
+    }else{
+        delay(50);
     }
 
 

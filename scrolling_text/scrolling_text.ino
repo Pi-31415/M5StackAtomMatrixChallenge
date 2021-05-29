@@ -8,6 +8,14 @@
 #define PIN 27
 
 
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PIN,
+  NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
+  NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
+  NEO_GRB            + NEO_KHZ800);
+
+const uint16_t colors[] = {
+  matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255) };
+
 void setup() {
   matrix.begin();
   matrix.setTextWrap(false);
@@ -15,7 +23,8 @@ void setup() {
   matrix.setTextColor(colors[0]);
 }
 
-
+int x    = matrix.width();
+int pass = 0;
 
 void loop() {
   matrix.fillScreen(0);

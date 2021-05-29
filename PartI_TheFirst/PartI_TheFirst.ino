@@ -38,7 +38,7 @@ int *display[1] = {full_screen};
 // STEP is for keeping track of the stages
 int STEP = 0;
 bool BLINK_MODE_ON = false;
-float BRAKE_ACCELERATION_THRESHOLD = 5.0;
+float BRAKE_ACCELERATION_THRESHOLD = 2.0;
 
 void setup()
 {
@@ -146,12 +146,11 @@ void loop()
 
     if (BLINK_MODE_ON)
     {
-        delay(100);
+        delay(50);
         M5.dis.clear();
-        delay(100);
+         delay(50);
     }
 
-    delay(5);
     M5.update();
 }
 

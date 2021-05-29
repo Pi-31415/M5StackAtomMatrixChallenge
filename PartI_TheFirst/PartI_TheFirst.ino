@@ -25,12 +25,7 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PIN,
                                                NEO_GRB + NEO_KHZ800);
 
 const uint16_t colors[] = {
-    matrix.Color(255, 0, 0), matrix.Color(0, 255, 0), matrix.Color(0, 0, 255)};
-
-//Define Colors
-//GRB not RGB
-int GRB_COLOR_WHITE = 0xffffff;
-int GRB_COLOR_RED = 0x00ff00;
+    matrix.Color(255, 255, 255), matrix.Color(255, 255, 255), matrix.Color(255, 255, 255)};
 
 // Define variables for instantaneous acceleration
 // and sample size for calculating average
@@ -103,7 +98,7 @@ void loop()
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("MANUAL REAR STROBE RED "));
+        matrix.print(F("MANUAL RED "));
         if (--x < -96)
         {
             x = matrix.width();
@@ -119,14 +114,15 @@ void loop()
         //Flash Red (Step 2)
         BLINK_MODE_ON = true;
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_RED);
+        matrix.fillScreen(matrix.Color(255, 0, 0));
+        matrix.show();
     }
     else if (STEP == 3)
     {
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("MANUAL FRONT STROBE WHITE "));
+        matrix.print(F("MANUAL WHITE "));
         if (--x < -96)
         {
             x = matrix.width();
@@ -142,14 +138,15 @@ void loop()
         //Flash White (Step 3)
         BLINK_MODE_ON = true;
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_WHITE);
+        matrix.fillScreen(matrix.Color(255, 255, 255));
+        matrix.show();
     }
     else if (STEP == 5)
     {
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("AUTOMATIC REAR MODE RED "));
+        matrix.print(F("AUTO RED "));
         if (--x < -96)
         {
             x = matrix.width();
@@ -183,14 +180,15 @@ void loop()
             BLINK_MODE_ON = true;
         }
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_RED);
+        matrix.fillScreen(matrix.Color(255, 0, 0));
+        matrix.show();
     }
     else if (STEP == 7)
     {
         // Scroll Text to show stage
         matrix.fillScreen(0);
         matrix.setCursor(x, 0);
-        matrix.print(F("AUTOMATIC REAR MODE WHITE "));
+        matrix.print(F("AUTO "));
         if (--x < -96)
         {
             x = matrix.width();
@@ -225,7 +223,8 @@ void loop()
         }
 
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_WHITE);
+        matrix.fillScreen(matrix.Color(255, 255, 255));
+        matrix.show();
     }
     else if (STEP >= 9)
     {
@@ -248,12 +247,4 @@ void loop()
     }
 
     M5.update();
-}
-
-void turn_on_lights(int arr[], int color)
-{
-    for (int i = 0; i < 25; i++)
-    {
-        M5.dis.drawpix(i, color);
-    }
 }

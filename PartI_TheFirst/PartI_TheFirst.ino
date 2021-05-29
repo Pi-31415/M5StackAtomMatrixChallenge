@@ -9,30 +9,29 @@
 */
 
 #include <Arduino.h>
-# include <math.h>
-
-
+#include <math.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_NeoPixel.h>
 #include "M5Atom.h"
 
-//Define Colors
-//GRB not RGB
-int GRB_COLOR_WHITE = 0xffffff;
-int GRB_COLOR_RED = 0x00ff00;
+#define PIN 27
+
+//Variables for M5 Matrix Library
+
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 5, PIN,
+                                               NEO_MATRIX_TOP + NEO_MATRIX_RIGHT +
+                                                   NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
+                                               NEO_GRB + NEO_KHZ800);
+
+const uint16_t colors[] = {
+    matrix.Color(255, 255, 255), matrix.Color(255, 255, 255), matrix.Color(255, 255, 255)};
 
 // Define variables for instantaneous acceleration
 // and sample size for calculating average
 float accX_avg = 0, accY_avg = 0, accZ_avg = 0;
 int n_average = 5;
 bool IMU_ready = false;
-
-//Define Patterns
-int full_screen[25] =
-    {
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1};
 
 //Array of patterns for display
 int *display[1] = {full_screen};
@@ -41,7 +40,6 @@ int *display[1] = {full_screen};
 int STEP = 0;
 bool BLINK_MODE_ON = false;
 float BRAKE_ACCELERATION_THRESHOLD = 10;
-
 
 void setup()
 {
@@ -59,7 +57,16 @@ void setup()
         IMU_ready = false;
         Serial.println("[ERR] IMU failed!");
     }
+    //Set up matrix for scrolling text
+    matrix.begin();
+    matrix.setTextWrap(false);
+    matrix.setBrightness(20);
+    matrix.setTextColor(colors[0]);
 }
+
+//Variables for scrolling the text from matrix library
+int x = matrix.width();
+int pass = 0;
 
 void loop()
 {
@@ -75,26 +82,76 @@ void loop()
     {
         //Nothing on screen, blank (Step 1)
         BLINK_MODE_ON = false;
-        M5.dis.clear();
+        matrix.fillScreen(matrix.Color(0, 0, 0));
+        matrix.show();
     }
     else if (STEP == 1)
+    {
+        // Scroll Text to show stage
+        matrix.fillScreen(0);
+        matrix.setCursor(x, 0);
+        matrix.print(F("MANUAL RED "));
+        if (--x < -96)
+        {
+            x = matrix.width();
+            if (++pass >= 3)
+                pass = 0;
+            matrix.setTextColor(colors[pass]);
+        }
+        matrix.show();
+        delay(80);
+    }
+    else if (STEP == 2)
     {
         //Flash Red (Step 2)
         BLINK_MODE_ON = true;
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_RED);
+        matrix.fillScreen(matrix.Color(255, 0, 0));
+        matrix.show();
     }
-    else if (STEP == 2)
+    else if (STEP == 3)
+    {
+        // Scroll Text to show stage
+        matrix.fillScreen(0);
+        matrix.setCursor(x, 0);
+        matrix.print(F("MANUAL WHITE "));
+        if (--x < -96)
+        {
+            x = matrix.width();
+            if (++pass >= 3)
+                pass = 0;
+            matrix.setTextColor(colors[pass]);
+        }
+        matrix.show();
+        delay(80);
+    }
+    else if (STEP == 4)
     {
         //Flash White (Step 3)
         BLINK_MODE_ON = true;
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_WHITE);
+        matrix.fillScreen(matrix.Color(255, 255, 255));
+        matrix.show();
     }
-    else if (STEP == 3)
+    else if (STEP == 5)
+    {
+        // Scroll Text to show stage
+        matrix.fillScreen(0);
+        matrix.setCursor(x, 0);
+        matrix.print(F("AUTO RED "));
+        if (--x < -96)
+        {
+            x = matrix.width();
+            if (++pass >= 3)
+                pass = 0;
+            matrix.setTextColor(colors[pass]);
+        }
+        matrix.show();
+        delay(80);
+    }
+    else if (STEP == 6)
     {
         //Automatic Rear Mode Rear (RED) (Step 4)
-
         float accX = 0, accY = 0, accZ = 0;
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Average the acceleration data
@@ -106,15 +163,35 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(((accX_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) ){
+        if (((accX_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD))
+        {
             BLINK_MODE_ON = false;
-        }else{
+        }
+        else
+        {
             BLINK_MODE_ON = true;
         }
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_RED);
+        matrix.fillScreen(matrix.Color(255, 0, 0));
+        matrix.show();
     }
-    else if (STEP == 4)
+    else if (STEP == 7)
+    {
+        // Scroll Text to show stage
+        matrix.fillScreen(0);
+        matrix.setCursor(x, 0);
+        matrix.print(F("AUTO "));
+        if (--x < -96)
+        {
+            x = matrix.width();
+            if (++pass >= 3)
+                pass = 0;
+            matrix.setTextColor(colors[pass]);
+        }
+        matrix.show();
+        delay(80);
+    }
+    else if (STEP == 8)
     {
         //Automatic Rear Mode Rear (WHITE) (Step 5)
         float accX = 0, accY = 0, accZ = 0;
@@ -128,16 +205,20 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(((accX_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) ){
+        if (((accX_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD))
+        {
             BLINK_MODE_ON = false;
-        }else{
+        }
+        else
+        {
             BLINK_MODE_ON = true;
         }
 
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_WHITE);
+        matrix.fillScreen(matrix.Color(255, 255, 255));
+        matrix.show();
     }
-    else if (STEP >= 5)
+    else if (STEP >= 9)
     {
         //Reset the STEP
         STEP = 0;
@@ -149,20 +230,14 @@ void loop()
     if (BLINK_MODE_ON)
     {
         delay(50);
-        M5.dis.clear();
+        matrix.fillScreen(matrix.Color(0, 0, 0));
+        matrix.show();
         delay(50);
-    }else{
+    }
+    else
+    {
         delay(100);
     }
 
-
     M5.update();
-}
-
-void turn_on_lights(int arr[], int color)
-{
-    for (int i = 0; i < 25; i++)
-    {
-        M5.dis.drawpix(i, color);
-    }
 }

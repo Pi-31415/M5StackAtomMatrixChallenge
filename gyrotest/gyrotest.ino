@@ -11,13 +11,125 @@ int GRB_COLOR_PURPLE = 0x008080;
 
 int activeColor = GRB_COLOR_WHITE;
 
-float gyroX = 0;
-float gyroY = 0;
-float gyroZ = 0;
+int colorList[] = {GRB_COLOR_BLACK, GRB_COLOR_GREEN, GRB_COLOR_RED};
+
+float accX = 0;
+float accY = 0;
+float accZ = 0;
 
 bool IMU6886Flag = false;
 
-int currentBrightness = 20;
+float LOW_TOL = 100;
+float HIGH_TOL = 900;
+
+float scaledAccX = 0;
+float scaledAccY = 0;
+float scaledAccZ = 0;
+
+//List of screens
+int black_screen[25] =
+    {
+        2, 0, 0, 0, 2,
+        0, 2, 0, 2, 0,
+        0, 0, 2, 0, 0,
+        0, 2, 0, 2, 0,
+        2, 0, 0, 0, 2};
+
+int full_screen[25] =
+    {
+        1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1};
+
+int zero[25] =
+    {
+        0, 0, 1, 1, 0,
+        0, 1, 0, 0, 1,
+        0, 1, 0, 0, 1,
+        0, 1, 0, 0, 1,
+        0, 0, 1, 1, 0};
+
+int one[25] =
+    {
+        0, 0, 1, 0, 0,
+        0, 1, 1, 0, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0,
+        0, 1, 1, 1, 0};
+
+int two[25] =
+    {
+        0, 1, 1, 1, 0,
+        0, 0, 0, 0, 1,
+        0, 0, 1, 1, 0,
+        0, 1, 0, 0, 0,
+        0, 1, 1, 1, 1};
+
+int three[25] =
+    {
+        0, 1, 1, 1, 0,
+        0, 0, 0, 0, 1,
+        0, 0, 1, 1, 0,
+        0, 0, 0, 0, 1,
+        0, 1, 1, 1, 0};
+
+int four[25] =
+    {
+        0, 0, 0, 1, 0,
+        0, 1, 0, 1, 0,
+        0, 1, 1, 1, 1,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0};
+
+int five[25] =
+    {
+        0, 1, 1, 1, 1,
+        0, 1, 0, 0, 0,
+        0, 1, 1, 1, 0,
+        0, 0, 0, 0, 1,
+        0, 1, 1, 1, 0};
+
+int six[25] =
+    {
+        0, 0, 1, 1, 0,
+        0, 1, 0, 0, 0,
+        0, 1, 1, 1, 0,
+        0, 1, 0, 0, 1,
+        0, 0, 1, 1, 0};
+
+int seven[25] =
+    {
+        0, 1, 1, 1, 1,
+        0, 0, 0, 1, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0};
+
+int eight[25] =
+    {
+        0, 0, 1, 1, 0,
+        0, 1, 0, 0, 1,
+        0, 0, 1, 1, 0,
+        0, 1, 0, 0, 1,
+        0, 0, 1, 1, 0};
+
+int nine[25] =
+    {
+        0, 0, 1, 1, 0,
+        0, 1, 0, 0, 1,
+        0, 0, 1, 1, 1,
+        0, 0, 0, 0, 1,
+        0, 0, 1, 1, 0};
+
+int currentState = 6;
+
+int *displayNumbers[10] = {zero, one, two, three, four, five, six, seven, eight, nine};
+
+bool switched_mode = false;
+float UPPER_THRESHOLD = 250;
+float LOWER_THERESHOLD = -250;
 
 void setup()
 {
@@ -26,60 +138,97 @@ void setup()
 
     IMU6886Flag = M5.IMU.Init() == 0;
 
-    // Initialize display
-    M5.dis.clear();
-    M5.dis.setBrightness(currentBrightness);
-
     if (!IMU6886Flag)
     {
-        Serial.println("Error initializing the IMU! 🙁");
+        Serial.println("Error initializing the IMU! :-(");
     }
 }
 
-bool moves_left = false;
-float UPPER_THRESHOLD = 250;
-float LOWER_THERESHOLD = -250;
-
-int ID = 0;
-
 void loop()
 {
-    if (IMU6886Flag) // Continue if the IMU is working
+    if (IMU6886Flag)
     {
-        M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
+        M5.IMU.getAccelData(&accX, &accY, &accZ);
 
-        float trackedQuantity = gyroY;
+        Serial.printf("Accel: %.2f, %.2f, %.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
 
-        if (trackedQuantity >= UPPER_THRESHOLD)
+        scaledAccX = accX * 1000;
+        scaledAccY = accY * 1000;
+        scaledAccZ = accZ * 1000;
+
+        if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) > HIGH_TOL && scaledAccZ > 0)
         {
-            moves_left = true;
-            ID++;
-            delay(100);
-        }
-        else if (trackedQuantity <= LOWER_THERESHOLD)
-        {
-            moves_left = false;
-            ID--;
-            delay(100);
+            //Facing Bottom
+            drawArray(black_screen, colorList);
         }
 
-        Serial.println(ID);
-
-        if (moves_left)
+        else if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) > HIGH_TOL && scaledAccZ < 0)
         {
-            activeColor = GRB_COLOR_RED;
+            //Top Facing Code
+            switched_mode = false;
+            drawArray(full_screen, colorList);
+        }
+
+        else if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) > HIGH_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccY > 0)
+        {
+            //UpArrow
+        }
+
+        else if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) > HIGH_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccY < 0)
+        {
+            //DownArrow
+        }
+
+        else if (abs(scaledAccX) > HIGH_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccX > 0)
+        {
+            //LeftArrow
+            if (!switched_mode)
+            {
+                currentState++;
+                if (currentState > 9)
+                {
+                    currentState = 0;
+                }
+                else if (currentState < 0)
+                {
+                    currentState = 9;
+                }
+            }
+            switched_mode = true;
+            drawArray(displayNumbers[currentState], colorList);
+        }
+
+        else if (abs(scaledAccX) > HIGH_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccX < 0)
+        {
+            //RightArrow
+            if (!switched_mode)
+            {
+                currentState--;
+                if (currentState > 9)
+                {
+                    currentState = 0;
+                }
+                else if (currentState < 0)
+                {
+                    currentState = 9;
+                }
+            }
+            switched_mode = true;
+            drawArray(displayNumbers[currentState], colorList);
         }
         else
         {
-            activeColor = GRB_COLOR_BLUE;
-        }
-
-        for (int i = 0; i < 25; i++)
-        {
-            M5.dis.drawpix(i, activeColor);
+            //M5.dis.clear();
         }
     }
 
-    delay(20);
     M5.update();
+}
+
+void drawArray(int arr[], int colors[])
+{
+    for (int i = 0; i < 25; i++)
+    {
+        M5.dis.drawpix(i, colors[arr[i]]);
+    }
 }

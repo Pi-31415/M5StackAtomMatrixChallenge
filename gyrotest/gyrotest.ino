@@ -123,13 +123,13 @@ int nine[25] =
         0, 0, 0, 0, 1,
         0, 0, 1, 1, 0};
 
-int currentState = 6;
+int displayed_mode = 1;
 
 int *displayNumbers[10] = {zero, one, two, three, four, five, six, seven, eight, nine};
 
 bool switched_mode = false;
-float UPPER_THRESHOLD = 250;
-float LOWER_THERESHOLD = -250;
+
+bool mode_selection_on = true;
 
 void setup()
 {
@@ -140,7 +140,7 @@ void setup()
 
     if (!IMU6886Flag)
     {
-        Serial.println("Error initializing the IMU! :-(");
+        Serial.println("Error initializing the IMU!");
     }
 }
 
@@ -156,6 +156,14 @@ void loop()
         scaledAccY = accY * 1000;
         scaledAccZ = accZ * 1000;
 
+        //Selection of mode through button press
+        if (M5.Btn.wasPressed())
+        {
+            Serial.println("wasPressed");
+            //Activates Green Screen
+            mode_selection_on = false;
+        }
+
         if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) > HIGH_TOL && scaledAccZ > 0)
         {
             //Facing Bottom
@@ -166,7 +174,16 @@ void loop()
         {
             //Top Facing Code
             switched_mode = false;
-            drawArray(full_screen, colorList);
+
+            if (mode_selection_on)
+            {
+                drawArray(displayNumbers[displayed_mode], colorList);
+            }
+            else
+            {
+                //Mode activated
+                drawArray(full_screen, colorList);
+            }
         }
 
         else if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) > HIGH_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccY > 0)
@@ -181,40 +198,42 @@ void loop()
 
         else if (abs(scaledAccX) > HIGH_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccX > 0)
         {
+            mode_selection_on = true;
             //LeftArrow
             if (!switched_mode)
             {
-                currentState++;
-                if (currentState > 9)
+                displayed_mode++;
+                if (displayed_mode > 5)
                 {
-                    currentState = 0;
+                    displayed_mode = 1;
                 }
-                else if (currentState < 0)
+                else if (displayed_mode < 1)
                 {
-                    currentState = 9;
+                    displayed_mode = 5;
                 }
             }
             switched_mode = true;
-            drawArray(displayNumbers[currentState], colorList);
+            drawArray(displayNumbers[displayed_mode], colorList);
         }
 
         else if (abs(scaledAccX) > HIGH_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccX < 0)
         {
+            mode_selection_on = true;
             //RightArrow
             if (!switched_mode)
             {
-                currentState--;
-                if (currentState > 9)
+                displayed_mode--;
+                if (displayed_mode > 5)
                 {
-                    currentState = 0;
+                    displayed_mode = 1;
                 }
-                else if (currentState < 0)
+                else if (displayed_mode < 1)
                 {
-                    currentState = 9;
+                    displayed_mode = 5;
                 }
             }
             switched_mode = true;
-            drawArray(displayNumbers[currentState], colorList);
+            drawArray(displayNumbers[displayed_mode], colorList);
         }
         else
         {

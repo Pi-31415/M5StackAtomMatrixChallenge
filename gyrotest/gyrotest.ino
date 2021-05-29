@@ -22,7 +22,7 @@ float gyroZ = 0;
 
 bool IMU6886Flag = false;
 
-int currentBrightness = 0;
+int currentBrightness = 10;
 
 void setup() 
 {
@@ -52,7 +52,8 @@ void loop()
     {
         M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
     
-        float trackedQuantity = gyroZ;
+        float trackedQuantity = gyroY;
+        Serial.println(trackedQuantity);
     
         if(abs(trackedQuantity) > TOLERANCE)
         {

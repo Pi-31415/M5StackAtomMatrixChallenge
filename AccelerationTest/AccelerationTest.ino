@@ -245,14 +245,14 @@ void loop()
     accY_avg = ((accY_avg * (n_average - 1)) + accY) / n_average;
     accZ_avg = ((accZ_avg * (n_average - 1)) + accZ) / n_average;
 
-    Serial.println("X: ");
-    Serial.println(accX_avg);
+   // Serial.println("X: ");
+    //Serial.println(accX_avg);
 
-    Serial.println("Y: ");
+   // Serial.println("Y: ");
     Serial.println(accY_avg);
 
-    Serial.println("Z: ");
-    Serial.println(accZ_avg);
+   // Serial.println("Z: ");
+    //Serial.println(accZ_avg);
     
     delay(5);
     M5.update();

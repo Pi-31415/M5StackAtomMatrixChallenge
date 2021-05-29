@@ -27,7 +27,7 @@ int full_screen[25] =
 
 
 //Array of patterns for display
-int *display[6] = { full_screen };
+int *display[1] = { full_screen };
 
 
 void setup()
@@ -61,14 +61,14 @@ void loop()
     //Flash Red (Step 2)
     BLINK_MODE_ON = true;
     M5.dis.clear();
-    drawArray2(display[0], GRB_COLOR_RED);
+    turn_on_lights(display[0], GRB_COLOR_RED);
   }
   else if (STEP == 2)
   {
     //Flash Red (Step 2)
     BLINK_MODE_ON = true;
     M5.dis.clear();
-    drawArray2(display[0], GRB_COLOR_WHITE);
+    turn_on_lights(display[0], GRB_COLOR_WHITE);
   }
 
   //This is for debugging purpose, listens to serial at 115200 baud
@@ -86,7 +86,7 @@ void loop()
 }
 
 
-void drawArray2(int arr[], int color)
+void turn_on_lights(int arr[], int color)
 {
   for (int i = 0; i < 25; i++)
   {

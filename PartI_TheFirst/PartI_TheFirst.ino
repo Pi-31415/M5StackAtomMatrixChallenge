@@ -15,7 +15,6 @@
 //Define Colors
 //GRB not RGB
 int GRB_COLOR_WHITE = 0xffffff;
-int GRB_COLOR_BLACK = 0x000000;
 int GRB_COLOR_RED = 0x00ff00;
 
 // Define variables for instantaneous acceleration
@@ -66,7 +65,7 @@ void loop()
     {
         //Increases the STEP everytime the button is pressed, and changes modes
         STEP++;
-        Serial.println("isPressed");
+        //Serial.println("isPressed");
     }
 
     if (STEP == 0)
@@ -111,7 +110,7 @@ void loop()
         }
 
         M5.dis.clear();
-        turn_on_lights(display[0], GRB_COLOR_WHITE);
+        turn_on_lights(display[0], GRB_COLOR_RED);
     }
     else if (STEP == 4)
     {
@@ -143,7 +142,7 @@ void loop()
     }
 
     //This is for debugging purpose, listens to serial at 115200 baud
-    Serial.println(STEP);
+    //Serial.println(STEP);
 
     if (BLINK_MODE_ON)
     {

@@ -115,7 +115,7 @@ void loop()
     else if (STEP == 2)
     {
         //Flash Red (Step 2)
-        matrix.clear();
+
         BLINK_MODE_ON = true;
         M5.dis.clear();
         turn_on_lights(display[0], GRB_COLOR_RED);
@@ -138,7 +138,7 @@ void loop()
     else if (STEP == 4)
     {
         //Flash White (Step 3)
-        matrix.clear();
+
         BLINK_MODE_ON = true;
         M5.dis.clear();
         turn_on_lights(display[0], GRB_COLOR_WHITE);
@@ -161,7 +161,7 @@ void loop()
     else if (STEP == 6)
     {
         //Automatic Rear Mode Rear (RED) (Step 4)
-        matrix.clear();
+
         float accX = 0, accY = 0, accZ = 0;
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Average the acceleration data
@@ -202,7 +202,7 @@ void loop()
     else if (STEP == 8)
     {
         //Automatic Rear Mode Rear (WHITE) (Step 5)
-        matrix.clear();
+
         float accX = 0, accY = 0, accZ = 0;
         M5.IMU.getAccelData(&accX, &accY, &accZ);
         // Average the acceleration data

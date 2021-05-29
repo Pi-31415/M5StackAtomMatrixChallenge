@@ -150,8 +150,9 @@ void loop()
     {
         delay(50);
         M5.dis.clear();
-    }else{
         delay(50);
+    }else{
+        delay(100);
     }
 
 

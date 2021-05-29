@@ -7,6 +7,9 @@ void setup()
     M5.dis.drawpix(0, 0xf00000);
 }
 
+
+float accX = 0, accY = 0, accZ = 0;
+
 void loop()
 {
     // put your main code here, to run repeatedly:
@@ -21,9 +24,15 @@ void loop()
     // accZ = upward pointing vector
     //      flat orientation: -1g
 
-    float accX = 0, accY = 0, accZ = 0;
-    M5.IMU.getAccelData(&accX, &accY, &accZ);
+    M5.IMU.getAccelData(accX, accY, accZ);
 
     //This is for debugging purpose, listens to serial at 115200 baud
+    Serial.println("Y : ");
     Serial.println(accY);
+
+    Serial.println("X : ");
+    Serial.println(accX);
+
+    Serial.println("Z : ");
+    Serial.println(accZ);
 }

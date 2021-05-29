@@ -33,15 +33,6 @@ float accX_avg = 0, accY_avg = 0, accZ_avg = 0;
 int n_average = 5;
 bool IMU_ready = false;
 
-//Define Patterns
-int full_screen[25] =
-    {
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1};
-
 //Array of patterns for display
 int *display[1] = {full_screen};
 
@@ -69,7 +60,7 @@ void setup()
     //Set up matrix for scrolling text
     matrix.begin();
     matrix.setTextWrap(false);
-    matrix.setBrightness(40);
+    matrix.setBrightness(20);
     matrix.setTextColor(colors[0]);
 }
 
@@ -91,7 +82,8 @@ void loop()
     {
         //Nothing on screen, blank (Step 1)
         BLINK_MODE_ON = false;
-        M5.dis.clear();
+        matrix.fillScreen(matrix.Color(0, 0, 0));
+        matrix.show();
     }
     else if (STEP == 1)
     {
@@ -238,7 +230,8 @@ void loop()
     if (BLINK_MODE_ON)
     {
         delay(50);
-        M5.dis.clear();
+        matrix.fillScreen(matrix.Color(0, 0, 0));
+        matrix.show();
         delay(50);
     }
     else

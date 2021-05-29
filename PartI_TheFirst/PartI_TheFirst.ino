@@ -27,16 +27,15 @@ void setup()
     {
         IMU_ready = true;
         Serial.println("[OK] INIT ready");
-        M5.dis.displaybuff((uint8_t *)image_CORRECT);
+        
     }
     else
     {
         IMU_ready = false;
         Serial.println("[ERR] IMU INIT failed!");
-        M5.dis.displaybuff((uint8_t *)image_WRONG);
+        
     }
-    delay(1000);
-    display_off_millis = millis() + 1000;
+    
 }
 
 void loop()

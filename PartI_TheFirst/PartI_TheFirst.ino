@@ -106,7 +106,7 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
+        if(((accX_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) ){
             BLINK_MODE_ON = false;
         }else{
             BLINK_MODE_ON = true;
@@ -128,7 +128,7 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD ){
+        if(((accX_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) ){
             BLINK_MODE_ON = false;
         }else{
             BLINK_MODE_ON = true;

@@ -194,12 +194,12 @@ void loop()
         M5.IMU.getTempData(&tempC);
         //Serial.printf(" Temp : %.2f C \r\n", tempC);
 
-        dtostrf(tempC, 4, 2, buff);
+        dtostrf(tempC, 6, 1, buff);
         tempStringC += buff;
         tempStringC += "C ";
 
         float tempF = tempC * 9 / 5 + 32;
-        dtostrf(tempF, 4, 2, buff);
+        dtostrf(tempF, 6, 1, buff);
         tempStringF += buff;
         tempStringF += "F ";
         //Serial.printf(" Temp : %.2f F \r\n", tempF);
@@ -212,10 +212,11 @@ void loop()
         scaledAccY = accY * 1000;
         scaledAccZ = accZ * 1000;
 
+        Serial.println(displayed_mode);
+
         //Selection of mode through button press
         if (M5.Btn.wasPressed())
         {
-            Serial.println("wasPressed");
             //Activates Green Screen
             mode_selection_on = false;
         }
@@ -330,7 +331,7 @@ void displayTemperature(String temperature)
     for (int i = 0; i < Length; i++)
     {
         char currentChar = temperature.charAt(i);
-        Serial.println(currentChar);
+        //Serial.println(currentChar);
 
         if (currentChar == '.')
         {

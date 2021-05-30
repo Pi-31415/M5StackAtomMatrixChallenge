@@ -165,7 +165,7 @@ float tempC = 0;
 
 char buff[10]; //Buffer for holding the string of temperature
 
-int dotDuration = 500;
+int dotDuration = 300;
 
 float temp_avg = 0.0;
 
@@ -196,12 +196,12 @@ void loop()
 
         dtostrf(tempC, 6, 1, buff);
         tempStringC += buff;
-        tempStringC += "C ";
+        tempStringC += "C";
 
         float tempF = tempC * 9 / 5 + 32;
         dtostrf(tempF, 6, 1, buff);
         tempStringF += buff;
-        tempStringF += "F ";
+        tempStringF += "F";
         //Serial.printf(" Temp : %.2f F \r\n", tempF);
 
         M5.IMU.getAccelData(&accX, &accY, &accZ);
@@ -239,14 +239,15 @@ void loop()
                 selected_mode = displayed_mode;
                 //Mode activated
 
+                Serial.println(tempStringC);
+                Serial.println(selected_mode);
+
                 if (selected_mode == 1)
                 {
-                    Serial.println(tempStringC);
                     displayTemperature(tempStringC);
                 }
                 else if (selected_mode == 2)
                 {
-                    
                 }
                 else if (selected_mode == 5)
                 {
@@ -321,6 +322,13 @@ void drawArray(int arr[], int colors[])
     }
 }
 
+void showBlank()
+{
+    M5.dis.clear();
+    drawArray(black_screen, colorList);
+    delay(dotDuration);
+}
+
 void displayTemperature(String temperature)
 {
     temperature.toUpperCase();
@@ -337,78 +345,91 @@ void displayTemperature(String temperature)
             M5.dis.clear();
             drawArray(dot, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '0')
         {
             M5.dis.clear();
             drawArray(zero, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '1')
         {
             M5.dis.clear();
             drawArray(one, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '2')
         {
             M5.dis.clear();
             drawArray(two, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '3')
         {
             M5.dis.clear();
             drawArray(three, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '4')
         {
             M5.dis.clear();
             drawArray(four, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '5')
         {
             M5.dis.clear();
             drawArray(five, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '6')
         {
             M5.dis.clear();
             drawArray(six, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '7')
         {
             M5.dis.clear();
             drawArray(seven, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '8')
         {
             M5.dis.clear();
             drawArray(eight, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == '9')
         {
             M5.dis.clear();
             drawArray(nine, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == 'C')
         {
             M5.dis.clear();
             drawArray(C, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == 'F')
         {
             M5.dis.clear();
             drawArray(F, colorList);
             delay(dotDuration);
+            showBlank();
         }
         else if (currentChar == ' ')
         {

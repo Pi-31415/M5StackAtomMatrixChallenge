@@ -1,0 +1,58 @@
+STEP = 0
+BLINK_MODE_ON = false
+BRAKE_ACCELERATION_THRESHOLD = 10
+
+function setup()
+    StartM5()
+    CheckIMU()
+
+function loop()
+
+    if (Button_is_pressed)
+        //Increases the STEP
+        STEP += 1
+
+    if (STEP == 0)
+        //OFF
+        turn_off_lights()
+
+    else if (STEP == 1)
+        //Flash Red
+        BLINK_MODE_ON = true
+        turn_on_lights(RED)
+        
+    else if (STEP == 2)
+        //Flash Red
+        BLINK_MODE_ON = true
+        turn_on_lights(WHITE)
+        
+    else if (STEP == 3)
+        //Automatic Rear Mode Rear (RED)
+        acc = M5.getAccelerationData()
+        
+        //Check if the Device is accelerating
+        //And Adjust Blink Mode
+        if( acc >= BRAKE_ACCELERATION_THRESHOLD)
+            BLINK_MODE_ON = false
+        else
+            BLINK_MODE_ON = true
+        turn_on_lights(RED)
+    
+    else if (STEP == 4)
+        //Automatic Rear Mode Rear (WHITE)
+        acc = M5.getAccelerationData()
+        
+        //Check if the Device is accelerating
+        //And Adjust Blink Mode
+        if( acc >= BRAKE_ACCELERATION_THRESHOLD)
+            BLINK_MODE_ON = false
+        else
+            BLINK_MODE_ON = true
+        turn_on_lights(WHITE)
+        
+    else if (STEP >= 5)
+        STEP = 0 //Reset the STEP
+
+    if (BLINK_MODE_ON)
+        turn_off_lights()
+        

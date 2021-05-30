@@ -20,6 +20,10 @@ float accX = 0;
 float accY = 0;
 float accZ = 0;
 
+//Timekeeping Variable
+unsigned int Time = 0;
+unsigned int old_Time = 0;
+
 bool IMU6886Flag = false;
 
 float LOW_TOL = 100;
@@ -171,6 +175,10 @@ int dotDuration = 500;
 
 float temp_avg = 0.0;
 
+//Variables for graphing mode
+float temp_data[] = {0.0, 0.0, 0.0, 0.0, 0.0};
+float temp_graph_sum = 0.0;
+
 void setup()
 {
     M5.begin(true, false, true);
@@ -206,6 +214,16 @@ void loop()
         tempStringF += "F";
         //Serial.printf(" Temp : %.2f F \r\n", tempF);
 
+        //Get Time
+        Time = millis() / 1000.0;
+
+        if (old_Time != Time)
+        {
+            Serial.println(Time);
+        }
+
+        old_Time = Time;
+
         M5.IMU.getAccelData(&accX, &accY, &accZ);
 
         //Serial.printf("Accel: %.2f, %.2f, %.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
@@ -217,7 +235,7 @@ void loop()
         //Selection of mode through button press
         if (M5.Btn.wasPressed())
         {
-            Serial.println("wasPressed");
+            //Serial.println("wasPressed");
             //Toggles the mode switch
 
             mode_selection_on = false;
@@ -250,6 +268,10 @@ void loop()
                 else if (selected_mode == 3)
                 {
                     DisplayTemperatureScale(tempF);
+                }
+                else if (selected_mode == 4)
+                {
+                    DisplayGraph();
                 }
                 else if (selected_mode == 5)
                 {
@@ -340,7 +362,7 @@ void displayTemperature(String temperature)
     for (int i = 0; i < Length; i++)
     {
         char currentChar = temperature.charAt(i);
-        Serial.println(currentChar);
+        //Serial.println(currentChar);
 
         if (currentChar == '.')
         {
@@ -483,4 +505,49 @@ void DisplayTemperatureScale(float tempF)
     {
         DisplayColor(GRB_COLOR_RED);
     }
+
+    M5.dis.drawpix(0, 0, GRB_COLOR_BLUE); // Green
+    M5.dis.drawpix(1, 0, GRB_COLOR_WHITE); // Green
+    M5.dis.drawpix(2, 0, GRB_COLOR_GREEN); // Green
+    M5.dis.drawpix(3, 0, GRB_COLOR_YELLOW); // Green
+    M5.dis.drawpix(4, 0, GRB_COLOR_ORANGE); // Green
+}
+
+void DisplayGraph()
+{
+    //Print out data array elements
+    for (int i = 0; i < 5; i++)
+    {
+        M5.IMU.getTempData(&tempC);
+        temp_data[i] = tempC;
+    }
+
+    //Find Average
+    temp_graph_sum = 0;
+    for (int i = 0; i < 5; i++)
+    {
+        temp_graph_sum += temp_data[i];
+    }
+
+    float temp_average = temp_graph_sum / 5.00;
+
+    //Normalize to be accurate until 0.01 C
+    for (int i = 0; i < 5; i++)
+    {
+        temp_data[i] = (temp_data[i] - temp_average) * 100.00;
+    }
+    //Shift the graph to middle of screen
+    for (int i = 0; i < 5; i++)
+    {
+        temp_data[i] = temp_data[i] + 2;
+    }
+
+    //Plot array
+    M5.dis.clear();
+    M5.dis.drawpix(0, temp_data[0], 0xff0000); // Green
+    M5.dis.drawpix(1, temp_data[1], 0xff0000); // Green
+    M5.dis.drawpix(2, temp_data[2], 0xff0000); // Green
+    M5.dis.drawpix(3, temp_data[3], 0xff0000); // Green
+    M5.dis.drawpix(4, temp_data[4], 0xff0000); // Green
+    delay(250);
 }

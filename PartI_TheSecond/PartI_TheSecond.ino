@@ -194,12 +194,12 @@ void loop()
         M5.IMU.getTempData(&tempC);
         //Serial.printf(" Temp : %.2f C \r\n", tempC);
 
-        dtostrf(tempC, 4, 2, buff);
+        dtostrf(tempC, 6, 1, buff);
         tempStringC += buff;
         tempStringC += "C ";
 
         float tempF = tempC * 9 / 5 + 32;
-        dtostrf(tempF, 4, 2, buff);
+        dtostrf(tempF, 6, 1, buff);
         tempStringF += buff;
         tempStringF += "F ";
         //Serial.printf(" Temp : %.2f F \r\n", tempF);

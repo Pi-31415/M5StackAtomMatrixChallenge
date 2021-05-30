@@ -165,7 +165,7 @@ float tempC = 0;
 
 char buff[10]; //Buffer for holding the string of temperature
 
-int dotDuration = 300;
+int dotDuration = 1000;
 
 float temp_avg = 0.0;
 
@@ -194,14 +194,14 @@ void loop()
         M5.IMU.getTempData(&tempC);
         //Serial.printf(" Temp : %.2f C \r\n", tempC);
 
-        dtostrf(tempC, 6, 1, buff);
+        dtostrf(tempC, 4, 2, buff);
         tempStringC += buff;
-        tempStringC += "C";
+        tempStringC += "C ";
 
         float tempF = tempC * 9 / 5 + 32;
-        dtostrf(tempF, 6, 1, buff);
+        dtostrf(tempF, 4, 2, buff);
         tempStringF += buff;
-        tempStringF += "F";
+        tempStringF += "F ";
         //Serial.printf(" Temp : %.2f F \r\n", tempF);
 
         M5.IMU.getAccelData(&accX, &accY, &accZ);
@@ -215,6 +215,7 @@ void loop()
         //Selection of mode through button press
         if (M5.Btn.wasPressed())
         {
+            Serial.println("wasPressed");
             //Activates Green Screen
             mode_selection_on = false;
         }
@@ -239,15 +240,13 @@ void loop()
                 selected_mode = displayed_mode;
                 //Mode activated
 
-                Serial.println(tempStringC);
-                Serial.println(selected_mode);
-
                 if (selected_mode == 1)
                 {
                     displayTemperature(tempStringC);
                 }
                 else if (selected_mode == 2)
                 {
+                    
                 }
                 else if (selected_mode == 5)
                 {
@@ -322,13 +321,6 @@ void drawArray(int arr[], int colors[])
     }
 }
 
-void showBlank()
-{
-    M5.dis.clear();
-    drawArray(black_screen, colorList);
-    delay(dotDuration);
-}
-
 void displayTemperature(String temperature)
 {
     temperature.toUpperCase();
@@ -338,98 +330,85 @@ void displayTemperature(String temperature)
     for (int i = 0; i < Length; i++)
     {
         char currentChar = temperature.charAt(i);
-        //Serial.println(currentChar);
+        Serial.println(currentChar);
 
         if (currentChar == '.')
         {
             M5.dis.clear();
             drawArray(dot, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '0')
         {
             M5.dis.clear();
             drawArray(zero, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '1')
         {
             M5.dis.clear();
             drawArray(one, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '2')
         {
             M5.dis.clear();
             drawArray(two, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '3')
         {
             M5.dis.clear();
             drawArray(three, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '4')
         {
             M5.dis.clear();
             drawArray(four, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '5')
         {
             M5.dis.clear();
             drawArray(five, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '6')
         {
             M5.dis.clear();
             drawArray(six, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '7')
         {
             M5.dis.clear();
             drawArray(seven, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '8')
         {
             M5.dis.clear();
             drawArray(eight, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == '9')
         {
             M5.dis.clear();
             drawArray(nine, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == 'C')
         {
             M5.dis.clear();
             drawArray(C, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == 'F')
         {
             M5.dis.clear();
             drawArray(F, colorList);
             delay(dotDuration);
-            showBlank();
         }
         else if (currentChar == ' ')
         {

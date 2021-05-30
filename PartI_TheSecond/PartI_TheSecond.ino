@@ -4,7 +4,7 @@
 int GRB_COLOR_WHITE = 0xffffff;
 int GRB_COLOR_BLACK = 0x000000;
 int GRB_COLOR_RED = 0x00ff00;
-int GRB_COLOR_ORANGE = 0xa5ff00;
+int GRB_COLOR_ORANGE = 0x7bff00;
 int GRB_COLOR_YELLOW = 0xffff00;
 int GRB_COLOR_GREEN = 0xff0000;
 int GRB_COLOR_BLUE = 0x0000ff;
@@ -220,7 +220,7 @@ void loop()
             Serial.println("wasPressed");
             //Toggles the mode switch
 
-                mode_selection_on = false;
+            mode_selection_on = false;
         }
 
         if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) > HIGH_TOL && scaledAccZ > 0)
@@ -247,9 +247,9 @@ void loop()
                 {
                     displayTemperature(tempStringC);
                 }
-                else if (selected_mode == 2)
+                else if (selected_mode == 3)
                 {
-
+                    DisplayTemperatureScale(tempF);
                 }
                 else if (selected_mode == 5)
                 {
@@ -437,5 +437,50 @@ void displayTemperature(String temperature)
         {
             DisplayBlank();
         }
+    }
+}
+
+void DisplayColor(int fillColor)
+{
+    for (int i = 0; i < 25; i++)
+    {
+        M5.dis.drawpix(i, fillColor);
+    }
+}
+
+void DisplayTemperatureScale(float tempF)
+{
+    float lowestTempF = 60;
+    float lowTempF = 70;
+    float midTempF = 80;
+    float highTempF = 90;
+    float highestTempF = 100;
+
+    if (tempF < lowestTempF)
+    {
+        DisplayColor(GRB_COLOR_BLUE);
+    }
+    else if (lowestTempF < tempF && tempF < lowTempF)
+    {
+        DisplayColor(GRB_COLOR_WHITE);
+    }
+    else if (lowTempF < tempF && tempF < midTempF)
+    {
+        DisplayColor(GRB_COLOR_GREEN);
+    }
+
+    else if (midTempF < tempF && tempF < highTempF)
+    {
+        DisplayColor(GRB_COLOR_YELLOW);
+    }
+
+    else if (highTempF < tempF && tempF < highestTempF)
+    {
+        DisplayColor(GRB_COLOR_ORANGE);
+    }
+
+    else if (tempF > highestTempF)
+    {
+        DisplayColor(GRB_COLOR_RED);
     }
 }

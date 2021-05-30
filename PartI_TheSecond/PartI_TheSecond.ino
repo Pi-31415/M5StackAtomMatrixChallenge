@@ -165,7 +165,7 @@ float tempC = 0;
 
 char buff[10]; //Buffer for holding the string of temperature
 
-int dotDuration = 1000;
+int dotDuration = 500;
 
 float temp_avg = 0.0;
 
@@ -212,8 +212,6 @@ void loop()
         scaledAccY = accY * 1000;
         scaledAccZ = accZ * 1000;
 
-        Serial.println(displayed_mode);
-
         //Selection of mode through button press
         if (M5.Btn.wasPressed())
         {
@@ -243,6 +241,7 @@ void loop()
 
                 if (selected_mode == 1)
                 {
+                    Serial.println(tempStringC);
                     displayTemperature(tempStringC);
                 }
                 else if (selected_mode == 2)

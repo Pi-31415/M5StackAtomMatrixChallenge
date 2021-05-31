@@ -32,7 +32,7 @@ float HIGH_TOL = 900;
 float scaledAccX = 0;
 float scaledAccY = 0;
 float scaledAccZ = 0;
-int n_average = 15;
+int n_average = 1;
 
 //List of screens
 int black_screen[25] =
@@ -214,16 +214,6 @@ void loop()
         tempStringF += "F";
         //Serial.printf(" Temp : %.2f F \r\n", tempF);
 
-        //Get Time
-        Time = millis() / 1000.0;
-
-        if (old_Time != Time)
-        {
-            Serial.println(Time);
-        }
-
-        old_Time = Time;
-
         M5.IMU.getAccelData(&accX, &accY, &accZ);
 
         //Serial.printf("Accel: %.2f, %.2f, %.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
@@ -243,7 +233,19 @@ void loop()
 
         if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) > HIGH_TOL && scaledAccZ > 0)
         {
-            //Facing Bottom
+            //Facing Bottom, read background temp as running average
+            //Get Time
+            Time = millis() / 1000.0;
+
+            //Get Running Average of Temperature every second
+            if (old_Time != Time)
+            {
+                temp_avg = ((temp_avg * (n_average - 1)) + tempC) / n_average;
+                n_average++;
+                Serial.println(temp_avg);
+            }
+
+            old_Time = Time;
             drawArray(black_screen, colorList);
         }
 
@@ -263,6 +265,11 @@ void loop()
 
                 if (selected_mode == 1)
                 {
+                    displayTemperature(tempStringC);
+                }
+                else if (selected_mode == 2)
+                {
+                    tempStringC = temp_avg;
                     displayTemperature(tempStringC);
                 }
                 else if (selected_mode == 3)
@@ -506,9 +513,9 @@ void DisplayTemperatureScale(float tempF)
         DisplayColor(GRB_COLOR_RED);
     }
 
-    M5.dis.drawpix(0, 0, GRB_COLOR_BLUE); // Green
-    M5.dis.drawpix(1, 0, GRB_COLOR_WHITE); // Green
-    M5.dis.drawpix(2, 0, GRB_COLOR_GREEN); // Green
+    M5.dis.drawpix(0, 0, GRB_COLOR_BLUE);   // Green
+    M5.dis.drawpix(1, 0, GRB_COLOR_WHITE);  // Green
+    M5.dis.drawpix(2, 0, GRB_COLOR_GREEN);  // Green
     M5.dis.drawpix(3, 0, GRB_COLOR_YELLOW); // Green
     M5.dis.drawpix(4, 0, GRB_COLOR_ORANGE); // Green
 }

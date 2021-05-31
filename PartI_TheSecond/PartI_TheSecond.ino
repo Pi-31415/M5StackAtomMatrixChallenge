@@ -319,7 +319,11 @@ void loop()
                 }
                 else if (selected_mode == 2)
                 {
+                    if(temp_avg == 0.0){
+                        temp_avg = tempC;
+                    }
                     tempStringC = temp_avg;
+                    tempStringC += "C";
                     displayTemperature(tempStringC);
                 }
                 else if (selected_mode == 3)
@@ -529,11 +533,11 @@ void DisplayColor(int fillColor)
 
 void DisplayTemperatureScale(float tempF)
 {
-    float lowestTempF = 60;
-    float lowTempF = 70;
-    float midTempF = 80;
-    float highTempF = 90;
-    float highestTempF = 100;
+    float lowestTempF = 90;
+    float lowTempF = 100;
+    float midTempF = 110; //112.58
+    float highTempF = 120;
+    float highestTempF = 130;
 
     if (tempF < lowestTempF)
     {

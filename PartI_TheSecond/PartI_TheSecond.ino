@@ -9,7 +9,6 @@ int GRB_COLOR_YELLOW = 0xffff00;
 int GRB_COLOR_GREEN = 0xff0000;
 int GRB_COLOR_BLUE = 0x0000ff;
 int GRB_COLOR_PURPLE = 0x008080;
-
 int GRB_COLOR_PINK = 0x14ff93;
 
 int activeColor = GRB_COLOR_WHITE;
@@ -17,6 +16,7 @@ int activeColor = GRB_COLOR_WHITE;
 int colorList[] = {GRB_COLOR_BLACK, GRB_COLOR_GREEN, GRB_COLOR_RED};
 
 int colorListMode[] = {GRB_COLOR_BLACK, GRB_COLOR_PINK, GRB_COLOR_PINK};
+
 
 float accX = 0;
 float accY = 0;
@@ -158,7 +158,7 @@ int ROM_2[25] =
         0, 1, 0, 1, 0,
         1, 1, 1, 1, 1};
 
-int ROM_3[25] =
+ int ROM_3[25] =
     {
         1, 1, 1, 1, 1,
         0, 1, 1, 1, 0,
@@ -166,14 +166,14 @@ int ROM_3[25] =
         0, 1, 1, 1, 0,
         1, 1, 1, 1, 1};
 
-int ROM_4[25] =
+ int ROM_4[25] =
     {
         1, 1, 1, 0, 1,
         0, 1, 1, 0, 1,
         0, 1, 1, 0, 1,
         0, 1, 0, 1, 0,
         1, 1, 1, 1, 0};
-
+        
 int ROM_5[25] =
     {
         1, 1, 0, 1, 1,
@@ -204,8 +204,6 @@ int displayed_mode = 1;
 int selected_mode = 1;
 
 int *displayNumbers[10] = {zero, one, two, three, four, five, six, seven, eight, nine};
-
-int *modeNumbers[10] = {zero, ROM_1, ROM_2, ROM_3, ROM_4, ROM_5};
 
 bool switched_mode = false;
 
@@ -300,7 +298,7 @@ void loop()
 
             if (mode_selection_on)
             {
-                drawArray(modeNumbers[displayed_mode], colorListMode);
+                drawArray(displayNumbers[displayed_mode], colorListMode);
             }
             else
             {
@@ -358,7 +356,7 @@ void loop()
                 }
             }
             switched_mode = true;
-            drawArray(modeNumbers[displayed_mode], colorListMode);
+            drawArray(displayNumbers[displayed_mode], colorListMode);
         }
 
         else if (abs(scaledAccX) > HIGH_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccX < 0)
@@ -378,7 +376,7 @@ void loop()
                 }
             }
             switched_mode = true;
-            drawArray(modeNumbers[displayed_mode], colorListMode);
+            drawArray(displayNumbers[displayed_mode], colorListMode);
         }
         else
         {

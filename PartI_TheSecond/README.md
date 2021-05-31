@@ -8,10 +8,10 @@
 ![Image of Arduino](https://img.shields.io/badge/Arduino_IDE-00979D?style=for-the-badge&logo=arduino&logoColor=white)
 ![Image of CPP](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
-Demonstration Video available on [YouTube here](https://www.youtube.com/watch?v=d_31dPjpohU).
+Demonstration Video available on [YouTube here](https://www.youtube.com/watch?v=pQHyVHZSXYU).
 
 
-![Image of Demonstration](img/part1_thefirst.png)
+![Image of Demonstration](img/part1_thesecond.png)
 
 This is the repository of our class project for ENGR-UH 1021J: Design & Innovation Summer 2021, taught by Instructor Matthew Karau.
 
@@ -54,7 +54,7 @@ if (tempF < lowestTempF)
     }
 ```
 
-we dedicated the final row of the screen to display the color range so the user can compare the color of the current temperature displayed in the  first 4 rows to this color range and easily determine if it is hot normal or cold
+We dedicated the final row of the screen to display the color range so the user can compare the color of the current temperature displayed in the  first 4 rows to this color range and easily determine if it is hot normal or cold
 
 ```cpp
 
@@ -75,7 +75,7 @@ To show graph of temperature across a we sampled the temperatures at a rate of 5
 
     float temp_average = temp_graph_sum / 5.00;
 
-    //Normalize to be accurate until 0.01 C
+    //Normalize the temperature data,and make it sensitive to 0.01 ˚ C
     for (int i = 0; i < 5; i++)
     {
         temp_data[i] = (temp_data[i] - temp_average) * 100.00;

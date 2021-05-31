@@ -82,10 +82,4 @@ To show graph of temperature across a we sampled the temperatures at a rate of 5
     }
 
 ```
-When the bike brakes (i.e. decelerates), the velocity of the bike decreases suddenly. Therefore, there is a sharp increase in the magnitude of the acceleration of the bike. This change in magnitude for braking is greater than a threshold.
 
-![Image of Theory1](img/part1_thefirst_theory1.png)
-
-We determined the threshold experimentally, and programmed the device in a way that the lights should be solid when the acceleration is above the threshold. Otherwise, the lights should blink.
-
-![Image of Theory2](img/part1_thefirst_theory2.png)

@@ -1,13 +1,5 @@
 # M5StackAtomMatrixChallenge
 
-## Another Heading
+This is the class project for D&I 2021 by Team 21.
 
-This is our **project**.
-
-- List Item 1
-- List Item 2
-- List Item 3
-
- Team Project
-!(https://docs.m5stack.com/en/arduino/arduino_development)[https://docs.m5stack.com/en/arduino/arduino_development] 
-Design & innovation team 
+Detailed README files are in the respective folders.

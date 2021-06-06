@@ -9,9 +9,7 @@
 */
 
 #include <Arduino.h>
-# include <math.h>
-
-
+#include <math.h>
 #include "M5Atom.h"
 
 //Define Colors
@@ -41,7 +39,6 @@ int *display[1] = {full_screen};
 int STEP = 0;
 bool BLINK_MODE_ON = false;
 float BRAKE_ACCELERATION_THRESHOLD = 10;
-
 
 void setup()
 {
@@ -106,9 +103,12 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(((accX_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) ){
+        if (((accX_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD))
+        {
             BLINK_MODE_ON = false;
-        }else{
+        }
+        else
+        {
             BLINK_MODE_ON = true;
         }
         M5.dis.clear();
@@ -128,9 +128,12 @@ void loop()
         Serial.println(accZ_avg * 10.0);
 
         //Check if the Device is accelerating (i.e. braking), and adjust blink mode
-        if(((accX_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >=BRAKE_ACCELERATION_THRESHOLD) ){
+        if (((accX_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accY_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD) || ((accZ_avg * 10.0) >= BRAKE_ACCELERATION_THRESHOLD))
+        {
             BLINK_MODE_ON = false;
-        }else{
+        }
+        else
+        {
             BLINK_MODE_ON = true;
         }
 
@@ -151,10 +154,11 @@ void loop()
         delay(50);
         M5.dis.clear();
         delay(50);
-    }else{
+    }
+    else
+    {
         delay(100);
     }
-
 
     M5.update();
 }

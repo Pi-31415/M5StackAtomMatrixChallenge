@@ -1,3 +1,12 @@
+/*
+   M5StackAtomMatrixChallenge.ino
+
+   By: Umer Bin Liaqat, Omar Elkammah, Sherifa Yakubu, Pi Ko
+   Date: 5 June 2021
+
+   Assignment 2 of ENGR-UH 1021J: Design & Innovation Summer 2021
+   This is for Part I - the Second
+*/
 #include "M5Atom.h"
 #include <stdlib.h>
 
@@ -147,46 +156,47 @@ int dot[25] =
         0, 0, 1, 0, 0,
         0, 0, 0, 0, 0};
 
-//Roman Numerals
+//Mode Selection Interface
 int ROM_1[25] =
     {
-        1, 1, 1, 1, 1,
-        0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0,
-        1, 1, 1, 1, 1};
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0};
 
 int ROM_2[25] =
     {
-        1, 1, 1, 1, 1,
-        0, 1, 0, 1, 0,
-        0, 1, 0, 1, 0,
-        0, 1, 0, 1, 0,
-        1, 1, 1, 1, 1};
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0};
 
 int ROM_3[25] =
     {
-        1, 1, 1, 1, 1,
-        0, 1, 1, 1, 0,
-        0, 1, 1, 1, 0,
-        0, 1, 1, 1, 0,
-        1, 1, 1, 1, 1};
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0};
 
 int ROM_4[25] =
     {
-        1, 1, 1, 0, 1,
-        0, 1, 1, 0, 1,
-        0, 1, 1, 0, 1,
-        0, 1, 0, 1, 0,
-        1, 1, 1, 1, 0};
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0};
 
 int ROM_5[25] =
     {
-        1, 1, 0, 1, 1,
-        0, 1, 0, 1, 0,
-        0, 1, 0, 1, 0,
-        0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0};
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0};
+
 //F and C units
 
 int F[25] =
@@ -246,14 +256,11 @@ void loop()
 {
     if (IMU6886Flag)
     {
-
         //Sense Current Temperature
         String tempStringF = "";
         String tempStringC = "";
-
         M5.IMU.getTempData(&tempC);
-        //Serial.printf(" Temp : %.2f C \r\n", tempC);
-
+        
         dtostrf(tempC, 4, 2, buff);
         tempStringC += buff;
         tempStringC += "C";
@@ -262,11 +269,8 @@ void loop()
         dtostrf(tempF, 4, 2, buff);
         tempStringF += buff;
         tempStringF += "F";
-        //Serial.printf(" Temp : %.2f F \r\n", tempF);
 
         M5.IMU.getAccelData(&accX, &accY, &accZ);
-
-        //Serial.printf("Accel: %.2f, %.2f, %.2f mg\r\n", accX * 1000, accY * 1000, accZ * 1000);
 
         scaledAccX = accX * 1000;
         scaledAccY = accY * 1000;
@@ -275,9 +279,7 @@ void loop()
         //Selection of mode through button press
         if (M5.Btn.wasPressed())
         {
-            //Serial.println("wasPressed");
             //Toggles the mode switch
-
             mode_selection_on = false;
         }
 
@@ -319,7 +321,8 @@ void loop()
                 }
                 else if (selected_mode == 2)
                 {
-                    if(temp_avg == 0.0){
+                    if (temp_avg == 0.0)
+                    {
                         temp_avg = tempC;
                     }
                     tempStringC = temp_avg;
@@ -339,16 +342,6 @@ void loop()
                     displayTemperature(tempStringF);
                 }
             }
-        }
-
-        else if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) > HIGH_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccY > 0)
-        {
-            //UpArrow
-        }
-
-        else if (abs(scaledAccX) < LOW_TOL && abs(scaledAccY) > HIGH_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccY < 0)
-        {
-            //DownArrow
         }
 
         else if (abs(scaledAccX) > HIGH_TOL && abs(scaledAccY) < LOW_TOL && abs(scaledAccZ) < LOW_TOL && scaledAccX > 0)
@@ -390,12 +383,7 @@ void loop()
             switched_mode = true;
             drawArray(modeNumbers[displayed_mode], colorListMode);
         }
-        else
-        {
-            //M5.dis.clear();
-        }
     }
-
     M5.update();
 }
 
@@ -535,7 +523,7 @@ void DisplayTemperatureScale(float tempF)
 {
     float lowestTempF = 90;
     float lowTempF = 100;
-    float midTempF = 110; //112.58
+    float midTempF = 110;
     float highTempF = 120;
     float highestTempF = 130;
 
@@ -567,18 +555,10 @@ void DisplayTemperatureScale(float tempF)
         DisplayColor(TempHighest);
     }
 
-        /*
-    int TempHighest = 0x39f13b;
-int TempHigh = 0xcbfe3e;
-int TempNorm = 0xffffff;
-int TempLow = 0xa210db;
-int TempLowest = 0x493fa2;
-    */
-
-    M5.dis.drawpix(0, 4, TempLowest );   // Green
-    M5.dis.drawpix(1, 4, TempLow );  // Green
-    M5.dis.drawpix(2, 4, TempNorm);  // Green
-    M5.dis.drawpix(3, 4, TempHigh); // Green
+    M5.dis.drawpix(0, 4, TempLowest);  // Green
+    M5.dis.drawpix(1, 4, TempLow);     // Green
+    M5.dis.drawpix(2, 4, TempNorm);    // Green
+    M5.dis.drawpix(3, 4, TempHigh);    // Green
     M5.dis.drawpix(4, 4, TempHighest); // Green
 }
 
@@ -590,7 +570,6 @@ void DisplayGraph()
         M5.IMU.getTempData(&tempC);
         temp_data[i] = tempC;
     }
-
     //Find Average
     temp_graph_sum = 0;
     for (int i = 0; i < 5; i++)
@@ -610,7 +589,6 @@ void DisplayGraph()
     {
         temp_data[i] = temp_data[i] + 2;
     }
-
     //Plot array
     M5.dis.clear();
     M5.dis.drawpix(0, temp_data[0], TempNorm); // Green

@@ -6,6 +6,21 @@
 
    Assignment 2 of ENGR-UH 1021J: Design & Innovation Summer 2021
    This is for Part I - the Second
+
+   Libraries : In addition to standard libraries, this program only uses M5 Atom as an additional library, which is included in the parent folder.
+
+   Demonstration: https://www.youtube.com/watch?v=pQHyVHZSXYU
+
+   The user chooses the modes by flipping the M5 left and right. The purple moving dot indicates the modes.
+   The mode is selected when the user clicks on M5. To change mode, flip the M5 again (as in the video).
+
+   The modes are - 
+    i. Show Active temperature + Units
+    ii. Show average of last 24 hours of temperature + Units
+    iii. Show color scale of temperature range + current temperature as color
+    iv. Show graph of temperature across a predefined range.
+    v. Change units
+
 */
 #include "M5Atom.h"
 #include <stdlib.h>
@@ -260,7 +275,7 @@ void loop()
         String tempStringF = "";
         String tempStringC = "";
         M5.IMU.getTempData(&tempC);
-        
+
         dtostrf(tempC, 4, 2, buff);
         tempStringC += buff;
         tempStringC += "C";

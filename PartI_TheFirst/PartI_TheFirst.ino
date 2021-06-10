@@ -6,6 +6,13 @@
 
    Assignment 2 of ENGR-UH 1021J: Design & Innovation Summer 2021
    This is for Part I - the First
+
+   Libraries : In addition to standard libraries, this program only uses M5 Atom as an additional library, which is included in the parent folder.
+
+   Demonstration: https://www.youtube.com/watch?v=d_31dPjpohU
+
+   This program accepts clicks from user. With each clicks, it alternates between the blink(red), blinik(white), automatic(red), automatic(white) modes.
+   Acceleration can be simulated by shaking the M5 Atom.
 */
 
 #include <Arduino.h>

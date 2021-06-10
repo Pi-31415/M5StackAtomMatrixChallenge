@@ -1,3 +1,30 @@
+/*
+   M5StackAtomMatrixChallenge.ino
+
+   By: Umer Bin Liaqat, Omar Elkammah, Sherifa Yakubu, Pi Ko
+   Date: 10 June 2021
+
+   Assignment 2 of ENGR-UH 1021J: Design & Innovation Summer 2021
+   This is for Part II - WeatherPod
+
+    Libraries : In addition to standard libraries, this program only uses M5 Atom as an additional library, which is included in the parent folder.
+
+   Demonstration: https://www.youtube.com/watch?v=L5AhNwaRDAg
+
+   The M5 modes can be activated via connecting to browser, at the IP 192.168.4.1
+
+   Alternatively, the user chooses the modes by flipping the M5 left and right. The purple moving dot indicates the modes.
+   The mode is selected when the user clicks on M5. To change mode, flip the M5 again (as in the video).
+
+   The modes are - 
+    i. Show Active temperature + Units
+    ii. Show average of last 24 hours of temperature + Units
+    iii. Show color scale of temperature range + current temperature as color
+    iv. Show graph of temperature across a predefined range.
+    v. Change units  
+    vi. Switch Off
+*/
+
 #include "M5Atom.h"
 #include <stdlib.h>
 #include <WiFi.h>
@@ -379,7 +406,8 @@ void loop()
                     displayTemperature(tempStringF);
                     Serial.println("Mode5 enabled");
                 }
-                if(currentLine.endsWith("GET /6")){
+                if (currentLine.endsWith("GET /6"))
+                {
                     DisplayBlank();
                     Serial.println("Turning Off");
                 }
